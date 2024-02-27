@@ -10,13 +10,13 @@ from TSModelRepository import TSModelRepository
 
 logging.basicConfig(level=kserve.constants.KSERVE_LOGLEVEL)
 
-DEFAULT_MODEL_NAME = "model"
-DEFAULT_INFERENCE_ADDRESS = DEFAULT_MANAGEMENT_ADDRESS = "http://127.0.0.1:8085"
-DEFAULT_GRPC_INFERENCE_PORT = "7070"
-
-DEFAULT_MODEL_STORE = "/mnt/models/model-store"
-CONFIG_PATH = "/mnt/models/config/config.properties"
-
+DEFAULT_MODEL_NAME = os.environ.get("MODEL_NAME", "model")
+DEFAULT_INFERENCE_ADDRESS = os.environ.get("INFERENCE_ADDRESS", "http://127.0.0.1:8085")
+DEFAULT_MANAGEMENT_ADDRESS = os.environ.get("MANAGEMENT_ADDRESS", "http://127.0.0.1:8085")
+DEFAULT_GRPC_INFERENCE_PORT = os.environ.get("GRPC_INFERENCE_PORT", "7070")
+DEFAULT_METRIC_CONFIG = os.environ.get("METRICS_CONFIG", "/home/model-server/metrics.yaml")
+DEFAULT_MODEL_STORE = os.environ.get("MODEL_STORE", "/mnt/models/model-store")
+CONFIG_PATH = os.environ.get("CONFIG_PATH", "/mnt/models/config/config.properties")
 
 def parse_config():
     """This function parses the model snapshot from the config.properties file
@@ -39,6 +39,10 @@ def parse_config():
                 # Assign key value pair to dict
                 # strip() removes white space from the ends of strings
                 keys[name.strip()] = value.strip()
+
+    if  "metrics_config" not in keys:
+        logging.info("defauting metrics config: %s", DEFAULT_METRIC_CONFIG)
+        keys["metrics_config"] = DEFAULT_METRIC_CONFIG
 
     keys["model_snapshot"] = json.loads(keys["model_snapshot"])
     inference_address, management_address, grpc_inference_port, model_store = (

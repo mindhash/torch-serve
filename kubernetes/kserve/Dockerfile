@@ -35,7 +35,8 @@ RUN python -m grpc_tools.protoc \
     ./kserve_wrapper/management.proto
 
 COPY config.properties config.properties
+COPY metrics.yaml metrics.yaml 
 
-USER model-server
+# USER model-server
 
 ENTRYPOINT ["/usr/local/bin/dockerd-entrypoint.sh"]
