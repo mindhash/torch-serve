@@ -40,9 +40,10 @@ def parse_config():
                 # strip() removes white space from the ends of strings
                 keys[name.strip()] = value.strip()
 
-    if  "metrics_config" not in keys:
-        logging.info("defauting metrics config: %s", DEFAULT_METRIC_CONFIG)
-        keys["metrics_config"] = DEFAULT_METRIC_CONFIG
+    # if  "metrics_config" not in keys:
+    # todo: check if metrics yaml really exists if not use default
+    logging.info("defauting metrics config: %s", DEFAULT_METRIC_CONFIG)
+    keys["metrics_config"] = DEFAULT_METRIC_CONFIG
 
     keys["model_snapshot"] = json.loads(keys["model_snapshot"])
     inference_address, management_address, grpc_inference_port, model_store = (
