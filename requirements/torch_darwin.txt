@@ -4,4 +4,4 @@
 torch==2.1.0; sys_platform == 'darwin'
 torchvision==0.16.0; sys_platform == 'darwin'
 torchtext==0.16.0; sys_platform == 'darwin'
-torchaudio==2.1.0; sys_platform == 'darwin'
+torchaudio==2.2.1+cu121; sys_platform == 'darwin'
